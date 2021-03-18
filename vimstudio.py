@@ -9,6 +9,9 @@ import network
 import guided_filter
 from tqdm import tqdm
 
+from rembg.bg import remove
+import io
+
 MODEL_PATH = './test_code/saved_models'
 UPLOAD_FOLDER = './imageuploads'
 SAVED_FOLDER = './images'
@@ -26,14 +29,22 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/', methods=['POST','GET'])
+@app.route('/process', methods=['POST','GET'])
 def upload_file():
     if request.method == 'POST':
         if 'file' not in request.files:
-            return {"message" : "No file part" }
+            return {
+                "code" : 1210,
+                "message" : "No file part" ,
+                "path" : None
+            }
         file = request.files['file']
         if file.filename == '':
-            return {"message" : "no selected file" }
+            return {
+                "code" : 1211,
+                "message" : "no selected file",
+                "path" : None 
+            }
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
@@ -43,13 +54,19 @@ def upload_file():
             if not os.path.exists(save_folder):
                 os.mkdir(save_folder)
             cartoonize(img_path, save_folder, model_path,filename)
+            path = "./images/" + filename
+            f = np.fromfile(path)
+            result = remove(f)
+            img = Image.open(io.BytesIO(result)).convert("RGBA")
+            img.save("./images/" + "final" +filename + ".png")
             return {
+                "code" : 2000,
                 "message" : "success",
-                "path" : request.base_url + "uploads/" + filename
+                "path" : request.base_url.replace("process","") + "uploads/" + "final" +filename + ".png"
             }
-            return {
-                "message" : "failed"
-            }
+        return {
+            "message" : "failed"
+        }
 
 def cartoonize(load_file, save_folder, model_path, name):
     input_photo = tf.placeholder(tf.float32, [1, None, None, 3])

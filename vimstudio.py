@@ -8,6 +8,8 @@ import tensorflow as tf
 import network
 import guided_filter
 from tqdm import tqdm
+from PIL import Image
+
 
 from rembg.bg import remove
 import io

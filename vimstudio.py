@@ -67,7 +67,7 @@ def upload_file(isRemove):
                 print(respon)
                 return respon
             else:
-                result = f
+                result = remove(f)
                 img = Image.open(io.BytesIO(result)).convert("RGBA")
                 img.save("./images/" + "final" +filename + ".png")
                 respon = {

@@ -59,16 +59,20 @@ def upload_file(isRemove):
             path = "./images/" + filename
             f = np.fromfile(path)
             if isRemove == '0':
-                result = remove(f)
+                return {
+                    "code" : 2000,
+                    "message" : "success",
+                    "path" : request.base_url.replace("process","") + "uploads/" +filename
+                }
             else:
                 result = f
-            img = Image.open(io.BytesIO(result)).convert("RGBA")
-            img.save("./images/" + "final" +filename + ".png")
-            return {
-                "code" : 2000,
-                "message" : "success",
-                "path" : request.base_url.replace("process","") + "uploads/" + "final" +filename + ".png"
-            }
+                img = Image.open(io.BytesIO(result)).convert("RGBA")
+                img.save("./images/" + "final" +filename + ".png")
+                return {
+                    "code" : 2000,
+                    "message" : "success",
+                    "path" : request.base_url.replace("process","") + "uploads/" + "final" +filename + ".png"
+                }
         return {
             "message" : "failed"
         }

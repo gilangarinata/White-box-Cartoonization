@@ -58,9 +58,9 @@ def upload_file(isRemove):
             cartoonize(img_path, save_folder, model_path,filename)
             path = "./images/" + filename
             f = np.fromfile(path)
-            if isRemove == '0'
+            if isRemove == '0':
                 result = remove(f)
-            else
+            else:
                 result = f
             img = Image.open(io.BytesIO(result)).convert("RGBA")
             img.save("./images/" + "final" +filename + ".png")

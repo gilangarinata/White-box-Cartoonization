@@ -31,8 +31,8 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/process', methods=['POST','GET'])
-def upload_file():
+@app.route('/process/<isRemove>', methods=['POST','GET'])
+def upload_file(isRemove):
     if request.method == 'POST':
         if 'file' not in request.files:
             return {
@@ -58,7 +58,10 @@ def upload_file():
             cartoonize(img_path, save_folder, model_path,filename)
             path = "./images/" + filename
             f = np.fromfile(path)
-            result = remove(f)
+            if isRemove == '0'
+                result = remove(f)
+            else
+                result = f
             img = Image.open(io.BytesIO(result)).convert("RGBA")
             img.save("./images/" + "final" +filename + ".png")
             return {

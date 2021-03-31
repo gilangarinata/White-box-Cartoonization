@@ -58,7 +58,7 @@ def upload_file(isRemove):
             cartoonize(img_path, save_folder, model_path,filename)
             path = "./images/" + filename
             f = np.fromfile(path)
-            if isRemove == '0':
+            if isRemove == '1':
                 respon = {
                     "code" : 2000,
                     "message" : "success",

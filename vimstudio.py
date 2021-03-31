@@ -62,7 +62,7 @@ def upload_file(isRemove):
                 respon = {
                     "code" : 2000,
                     "message" : "success",
-                    "path" : request.base_url.replace("process","") + "uploads/" +filename
+                    "path" : request.base_url.replace("process","").replace("/0","").replace("/1","") + "uploads/" +filename
                 }
                 print(respon)
                 return respon
@@ -73,7 +73,7 @@ def upload_file(isRemove):
                 respon = {
                     "code" : 2000,
                     "message" : "success",
-                    "path" : request.base_url.replace("process","") + "uploads/" + "final" +filename + ".png"
+                    "path" : request.base_url.replace("process","").replace("/0","").replace("/1","") + "uploads/" + "final" +filename + ".png"
                 }
                 print(respon)
                 return respon
